@@ -27,20 +27,24 @@ export class LDService {
     .pipe(map(response => response));
   }
 
- 
-
-  private apiUrl2= 'https://app.launchdarkly.com/api/v2/flag-status';
-  private envkeyDev= 'smaple-flag-1';
-
-  getFeatureFlagStatuses(): Observable<any> {
   
+  updateFlag(projectKey: string, featureFlagKey: string, env: string, newState: boolean): Observable<any> {
+    const url = `${this.apiUrl}/${projectKey}/${featureFlagKey}`;
+    const body = {
+      environmentKey: env,
+      instructions: [
+        {
+          kind: newState ? 'turnFlagOn' : 'turnFlagOff'
+        }
+      ]
+    };
     const headers = new HttpHeaders({
-      'Authorization': this.apiKey,
-      'Content-Type': 'application/json'
+      'Authorization': this.apiKey, // Replace with your actual API key
+      'Content-Type': 'application/json; domain-model=launchdarkly.semanticpatch'
     });
-
-    console.log(this.http.get<any>(`${this.apiUrl}/${this.projectKey}`))
-    return this.http.get<any>(`${this.apiUrl2}/${this.projectKey}/${this.envkeyDev}`, { headers});
+    return this.http.patch(url, body, { headers });
   }
+
+ 
 }
 

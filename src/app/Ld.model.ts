@@ -1,4 +1,6 @@
 export interface FlagData {
+  name: any;
+  environments: any;
   _links:     FlagDataLinks;
   items:      Item[];
   totalCount: number;

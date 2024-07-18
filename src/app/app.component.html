@@ -21,9 +21,34 @@
     <tbody>
       <tr *ngFor="let flag of flagData">
         <td>{{ flag.name}}</td>
-        <td>{{ flag.environments.development.on}}</td>
-        <td>{{ flag.environments.test.on}}</td>
-        <td>{{ flag.environments.production.on}}</td>
+        <td>
+          <div class="dropdown" [ngClass]="{'open': dropdownOpen[flag.name + '-development']}">
+            <button
+              (click)="toggleDropdown(flag.name, 'development')"
+              [ngClass]="{'green-button': flag.environments.development.on, 'red-button': !flag.environments.development.on}">
+              {{ flag.environments.development.on ? 'On' : 'Off' }}
+            </button>
+            <div class="dropdown-content" *ngIf="dropdownOpen[flag.name + '-development']">
+              <button
+                [ngClass]="{'green-button': !flag.environments.development.on, 'red-button': flag.environments.development.on}"
+                (click)="updateFlag('projectKey', flag.name, flags , 'development', !flag.environments.development.on)">
+                {{ !flag.environments.development.on ? 'On' : 'Off' }}
+              </button>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button
+          [ngClass]="{'green-button': flag.environments.test.on, 'red-button': !flag.environments.test.on}">
+          {{ flag.environments.test.on ? 'On' : 'Off' }}
+          </button>
+        </td>
+        <td> 
+          <button
+          [ngClass]="{'green-button': flag.environments.production.on, 'red-button': !flag.environments.production.on}">
+          {{ flag.environments.production.on ? 'On' : 'Off' }}
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
